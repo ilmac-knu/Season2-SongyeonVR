@@ -6,283 +6,195 @@
 
 <title>Season2 Songyeon VR</title>
 
-<link rel="stylesheet"
-href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css"/>
-
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css">
 <script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
 
 <style>
-
 html,body{
-margin:0;
-width:100%;
-height:100%;
-overflow:hidden;
-font-family:Arial,sans-serif;
-background:#000;
+  margin:0;
+  width:100%;
+  height:100%;
+  overflow:hidden;
+  font-family:Arial,sans-serif;
+  background:#000;
 }
 
 #panorama{
-width:100%;
-height:100%;
+  width:100%;
+  height:100%;
 }
 
 .sceneTitle{
-position:absolute;
-top:20px;
-left:50%;
-transform:translateX(-50%);
-z-index:1000;
-
-padding:12px 25px;
-
-background:rgba(0,0,0,.55);
-
-color:white;
-
-font-size:22px;
-font-weight:bold;
-
-border-radius:30px;
+  position:absolute;
+  top:20px;
+  left:50%;
+  transform:translateX(-50%);
+  z-index:1000;
+  padding:12px 25px;
+  background:rgba(0,0,0,.55);
+  color:white;
+  font-size:22px;
+  font-weight:bold;
+  border-radius:30px;
 }
 
 .bigArrow{
-
-width:90px;
-height:90px;
-
-border-radius:50%;
-
-background:white;
-
-display:flex;
-justify-content:center;
-align-items:center;
-
-font-size:55px;
-
-color:black;
-
-border:4px solid rgba(0,0,0,.15);
-
-box-shadow:
-0 0 20px rgba(0,0,0,.55);
-
+  width:90px;
+  height:90px;
+  border-radius:50%;
+  background:white;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-size:55px;
+  color:black;
+  border:4px solid rgba(0,0,0,.15);
+  box-shadow:0 0 20px rgba(0,0,0,.55);
 }
 
 .pnlm-hotspot-base{
-background:none !important;
+  background:none !important;
 }
 
 .pnlm-tooltip{
-display:none !important;
+  display:none !important;
 }
-
-
-/* 모바일 */
 
 @media(max-width:768px){
-
-.bigArrow{
-
-width:180px !important;
-height:180px !important;
-
-font-size:110px !important;
-
-border:5px solid rgba(0,0,0,.15);
-
+  .bigArrow{
+    width:180px !important;
+    height:180px !important;
+    font-size:110px !important;
+    border:5px solid rgba(0,0,0,.15) !important;
+  }
 }
-
-}
-
 </style>
-
 </head>
 
 <body>
 
-<div class="sceneTitle" id="title">
-
-VR1 거리 접근
-
-</div>
-
+<div class="sceneTitle" id="title">VR1 거리 접근</div>
 <div id="panorama"></div>
 
 <script>
-
-var titles={
-
-vr01:"VR1 거리 접근",
-vr02:"VR2 지하 입구",
-vr03:"VR3 메인 공간",
-vr04:"VR4 라운지/미니바",
-vr05:"VR5 창문/출입구"
-
+var titles = {
+  vr01:"VR1 거리 접근",
+  vr02:"VR2 지하 입구",
+  vr03:"VR3 메인 공간",
+  vr04:"VR4 라운지/미니바",
+  vr05:"VR5 창문/출입구"
 };
 
-var viewer=pannellum.viewer('panorama',{
-
-"default":{
-"firstScene":"vr01",
-"sceneFadeDuration":1000,
-"autoLoad":true
-},
-
-"scenes":{
-
-"vr01":{
-
-"panorama":"images/vr01_street_approach.png",
-
-"defaultYaw":70,
-
-"hotSpots":[
-
-{
-"pitch":-15,
-"yaw":70,
-"type":"scene",
-"text":"다음",
-
-"sceneId":"vr02"
+function nextArrow(hotSpotDiv){
+  hotSpotDiv.classList.add("bigArrow");
+  hotSpotDiv.innerHTML = "➜";
 }
 
-]
-
-},
-
-"vr02":{
-
-"panorama":"images/vr02_basement_entry.png",
-
-"hotSpots":[
-
-{
-"pitch":-12,
-"yaw":0,
-"type":"scene",
-"text":"다음",
-"sceneId":"vr03"
-},
-
-{
-"pitch":-12,
-"yaw":180,
-"type":"scene",
-"text":"이전",
-"sceneId":"vr01"
+function backArrow(hotSpotDiv){
+  hotSpotDiv.classList.add("bigArrow");
+  hotSpotDiv.innerHTML = "◀";
 }
 
-]
+var viewer = pannellum.viewer("panorama", {
+  "default":{
+    "firstScene":"vr01",
+    "sceneFadeDuration":1000,
+    "autoLoad":true
+  },
 
-},
+  "scenes":{
+    "vr01":{
+      "panorama":"images/vr01_street_approach.png",
+      "yaw":70,
+      "hotSpots":[
+        {
+          "pitch":-15,
+          "yaw":70,
+          "type":"scene",
+          "sceneId":"vr02",
+          "createTooltipFunc":nextArrow
+        }
+      ]
+    },
 
-"vr03":{
+    "vr02":{
+      "panorama":"images/vr02_basement_entry.png",
+      "hotSpots":[
+        {
+          "pitch":-12,
+          "yaw":0,
+          "type":"scene",
+          "sceneId":"vr03",
+          "createTooltipFunc":nextArrow
+        },
+        {
+          "pitch":-12,
+          "yaw":180,
+          "type":"scene",
+          "sceneId":"vr01",
+          "createTooltipFunc":backArrow
+        }
+      ]
+    },
 
-"panorama":"images/vr03_main_hall.png",
+    "vr03":{
+      "panorama":"images/vr03_main_hall.png",
+      "hotSpots":[
+        {
+          "pitch":-12,
+          "yaw":40,
+          "type":"scene",
+          "sceneId":"vr04",
+          "createTooltipFunc":nextArrow
+        },
+        {
+          "pitch":-12,
+          "yaw":180,
+          "type":"scene",
+          "sceneId":"vr02",
+          "createTooltipFunc":backArrow
+        }
+      ]
+    },
 
-"hotSpots":[
+    "vr04":{
+      "panorama":"images/vr04_lounge_bar.png",
+      "hotSpots":[
+        {
+          "pitch":-12,
+          "yaw":-40,
+          "type":"scene",
+          "sceneId":"vr05",
+          "createTooltipFunc":nextArrow
+        },
+        {
+          "pitch":-12,
+          "yaw":180,
+          "type":"scene",
+          "sceneId":"vr03",
+          "createTooltipFunc":backArrow
+        }
+      ]
+    },
 
-{
-"pitch":-12,
-"yaw":40,
-"type":"scene",
-"text":"다음",
-"sceneId":"vr04"
-},
-
-{
-"pitch":-12,
-"yaw":180,
-"type":"scene",
-"text":"이전",
-"sceneId":"vr02"
-}
-
-]
-
-},
-
-"vr04":{
-
-"panorama":"images/vr04_lounge_bar.png",
-
-"hotSpots":[
-
-{
-"pitch":-12,
-"yaw":-40,
-"type":"scene",
-"text":"다음",
-"sceneId":"vr05"
-},
-
-{
-"pitch":-12,
-"yaw":180,
-"type":"scene",
-"text":"이전",
-"sceneId":"vr03"
-}
-
-]
-
-},
-
-"vr05":{
-
-"panorama":"images/vr05_window_exit.png",
-
-"hotSpots":[
-
-{
-"pitch":-12,
-"yaw":180,
-"type":"scene",
-"text":"이전",
-"sceneId":"vr04"
-}
-
-]
-
-}
-
-}
-
+    "vr05":{
+      "panorama":"images/vr05_window_exit.png",
+      "hotSpots":[
+        {
+          "pitch":-12,
+          "yaw":180,
+          "type":"scene",
+          "sceneId":"vr04",
+          "createTooltipFunc":backArrow
+        }
+      ]
+    }
+  }
 });
 
-
-function hotspot(div){
-
-div.classList.add("bigArrow");
-
-div.innerHTML="➜";
-
-}
-
-function backspot(div){
-
-div.classList.add("bigArrow");
-
-div.innerHTML="◀";
-
-}
-
-
-viewer.on("scenechange",function(sceneId){
-
-document.getElementById("title").innerHTML=titles[sceneId];
-
+viewer.on("scenechange", function(sceneId){
+  document.getElementById("title").innerHTML = titles[sceneId];
 });
-
-/* ↓↓↓ 여기 추가 ↓↓↓ */
-
-.pnlm-hotspot{
-transform:scale(1.8);
-}
-
 </script>
 
 </body>
